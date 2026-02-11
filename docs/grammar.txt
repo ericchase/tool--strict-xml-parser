@@ -1,0 +1,80 @@
+Within the expression on the right-hand side of a rule, the following expressions are used to match strings of one or more characters:
+#xN
+    where N is a hexadecimal integer, the expression matches the character whose number (code point) in ISO/IEC 10646 is N. The number of leading zeros in the #xN form is insignificant.
+[a-zA-Z], [#xN-#xN]
+    matches any Char with a value in the range(s) indicated (inclusive).
+[abc], [#xN#xN#xN]
+    matches any Char with a value among the characters enumerated. Enumerations and ranges can be mixed in one set of brackets.
+[^a-z], [^#xN-#xN]
+    matches any Char with a value outside the range indicated.
+[^abc], [^#xN#xN#xN]
+    matches any Char with a value not among the characters given. Enumerations and ranges of forbidden values can be mixed in one set of brackets.
+"string"
+    matches a literal string matching that given inside the double quotes.
+'string'
+    matches a literal string matching that given inside the single quotes.
+These symbols may be combined to match more complex patterns as follows, where A and B represent simple expressions:
+(expression)
+    expression is treated as a unit and may be combined as described in this list.
+A?
+    matches A or nothing; optional A.
+A B
+    matches A followed by B. This operator has higher precedence than alternation; thus A B | C D is identical to (A B) | (C D).
+A | B
+    matches A or B.
+A - B
+    matches any string that matches A but does not match B.
+A+
+    matches one or more occurrences of A. Concatenation has higher precedence than alternation; thus A+ | B+ is identical to (A+) | (B+).
+A*
+    matches zero or more occurrences of A. Concatenation has higher precedence than alternation; thus A* | B* is identical to (A*) | (B*).
+Other notations used in the productions are:
+/* ... */
+    comment.
+[ wfc: ... ]
+    well-formedness constraint; this identifies by name a constraint on well-formed documents associated with a production.
+[ vc: ... ]
+    validity constraint; this identifies by name a constraint on valid documents associated with a production.
+
+[22]  prolog        ::= XMLDecl? Misc* (doctypedecl Misc*)?
+[23]  XMLDecl       ::= '<?xml' VersionInfo EncodingDecl? SDDecl? S? '?>'
+[24]  VersionInfo   ::= S 'version' Eq ("'" VersionNum "'" | '"' VersionNum '"')
+[25]  Eq            ::= S? '=' S?
+[26]  VersionNum    ::= '1.' [0-9]+
+[27]  Misc          ::= Comment | PI | S
+
+[15]  Comment       ::= '<!--' ((Char - '-') | ('-' (Char - '-')))* '-->'
+
+// instructions for external applications, not the xml parser
+[16]  PI            ::= '<?' PITarget (S (Char* - (Char* '?>' Char*)))? '?>'
+[17]  PITarget      ::= Name - (('X' | 'x') ('M' | 'm') ('L' | 'l'))
+
+// whitespace           space | tab | carriage return | line feed
+[3]   S             ::= (#x20 | #x9 | #xD | #xA)+
+
+// Document Type Definition
+[28]  doctypedecl   ::= '<!DOCTYPE' S Name (S ExternalID)? S? ('[' intSubset ']' S?)? '>'
+[28a] DeclSep       ::= PEReference | S
+[28b] intSubset     ::= (markupdecl | DeclSep)*
+[29]  markupdecl    ::= elementdecl | AttlistDecl | EntityDecl | NotationDecl | PI | Comment
+
+// Encoding Declaration
+[80]  EncodingDecl  ::= S 'encoding' '=' ('"' EncName '"' | "'" EncName "'" )
+[81]  EncName       ::= [A-Za-z] ([A-Za-z0-9._] | '-')*/* Encoding name contains only Latin characters */
+
+// Standalone Document Declaration
+[32]  SDDecl        ::= S 'standalone' '=' (("'" ('yes' | 'no') "'") | ('"' ('yes' | 'no') '"'))
+
+1. XMLDecl? Misc* (doctypedecl Misc*)?
+-- `${XMLDecl?}${Misc*}${(doctypedecl Misc*)?}`
+-- `${XMLDecl}`
+2. `<?xml${VersionInfo}${EncodingDecl?}${SDDecl?}?>`
+-- `<?xml${VersionInfo}>`
+3. '<?xml' ' ' 'version' '=' ("'" VersionNum "'" | '"' VersionNum '"') ' ' 'encoding' '=' ('"' EncName '"' | "'" EncName "'" ) ' ' 'standalone' '=' (("'" ('yes' | 'no') "'") | ('"' ('yes' | 'no') '"')) '?>'
+-- '<?xml' ' ' 'version' '=' ("'" VersionNum "'" | '"' VersionNum '"') '?>'
+
+---
+
+1. doctypedecl
+2. '<!DOCTYPE' ' ' Name (' ' ExternalID)? ' '? ('[' intSubset ']' ' '?)? '>'
+-- '<!DOCTYPE ' Name (' ' ExternalID)? ' '? ('[' intSubset ']' ' '?)? '>'
