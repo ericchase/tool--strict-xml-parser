@@ -12,6 +12,8 @@ If you're interested or have questions, feel free to submit an [issue](https://g
 
 ## Build
 
+You will need the `bundle@tsc-standalone` project in order to run the build script. It's currently not available on GitHub, so message me if you want to setup for building.
+
 ```bash
 bun install
 bun run build
