@@ -70,3 +70,7 @@ sync.ffs_db
 /pids/
 /src-tauri/target/
 /web_modules/
+
+## Build Tools Specific
+
+**/.git.git/

@@ -9,7 +9,7 @@ declare const panic: (code: string, offset: number) => never;
 
 /* @logic strict */
 if (V[Vi] !== 0x3c || V[Vi + 1] !== 0x3f) {
-  panic("ERR_MISSING_PROLOG", Vi);
+  panic('ERR_MISSING_PROLOG', Vi);
 }
 // Hard-wired signature check for <?xml version="1.0" encoding="UTF-8"?>
 // (Verification logic here)

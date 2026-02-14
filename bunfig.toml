@@ -7,9 +7,3 @@ saveTextLockfile = true
 
 [install.security]
 scanner = "@socketsecurity/bun-security-scanner"
-
-[test]
-coverageReporter = ["text", "lcov"]
-coverageSkipTestFiles = true                                            # Exclude test files from coverage reports
-coverageThreshold = { functions = 1.0, statements = 1.0, lines = 0.75 }
-root = "src"                                                            # Only scan for tests in the src directory

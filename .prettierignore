@@ -1,0 +1,13 @@
+# Patterns from .gitignore are included
+
+*-lock.json
+*-lock.yaml
+bun.lock
+
+/coverage/
+/docs/
+/tools/bundle/**/
+
+## Project Specific
+/out/**/*
+!/out/**/*.d.ts

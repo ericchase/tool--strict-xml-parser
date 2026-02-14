@@ -14,6 +14,6 @@ const sEnd = S[Si - 1];
 
 // If the byte after the '>' of the STag is the '<' of this ETag
 if (V[sEnd + 1] === 0x3c && V[sEnd + 2] === 0x2f) {
-  panic("ERR_USE_SELF_CLOSING", sEnd + 1);
+  panic('ERR_USE_SELF_CLOSING', sEnd + 1);
 }
 /* @end */

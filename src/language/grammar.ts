@@ -23,7 +23,7 @@
  * template literals.
  */
 
-import { zero_or_more } from "./notation.js";
+import { zero_or_more } from './notation.js';
 
 // Element
 // [WFC: Element Type Match]

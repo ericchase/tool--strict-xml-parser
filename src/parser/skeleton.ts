@@ -12,17 +12,7 @@
  * LUT - [Lookup]   The NameChar LUT (256-byte Uint8Array)
  * panic - [fatal]  The panic function: panic(errorCode, offset)
  */
-export function parser(
-  V: Uint8Array,
-  Vi = 0,
-  AT: Uint8Array,
-  AS: Uint32Array,
-  AE: Uint32Array,
-  Ai = 0,
-  S: Uint32Array,
-  Si = 0,
-  LUT: Uint8Array,
-) {
+export function parser(V: Uint8Array, Vi = 0, AT: Uint8Array, AS: Uint32Array, AE: Uint32Array, Ai = 0, S: Uint32Array, Si = 0, LUT: Uint8Array) {
   const n = V.length;
 
   /* @slot PROLOG */
@@ -48,19 +38,19 @@ export function parser(
         const sE = S[--Si];
         const sS = S[--Si];
         if (nameLen !== sE - sS) {
-          panic("ERR_TAG_MISMATCH", Vi);
+          panic('ERR_TAG_MISMATCH', Vi);
         }
 
         // Byte-by-byte comparison
         for (let j = 0; j < nameLen; j++) {
           if (V[nameS + j] !== V[sS + j]) {
-            panic("ERR_TAG_MISMATCH", nameS + j);
+            panic('ERR_TAG_MISMATCH', nameS + j);
           }
         }
 
         /* @slot ETAG_CLOSE */
         if (V[Vi] !== 0x3e) {
-          panic("ERR_WHITESPACE_IN_CLOSE_TAG", Vi);
+          panic('ERR_WHITESPACE_IN_CLOSE_TAG', Vi);
         }
 
         AT[Ai] = 2; // TYPE_ETAG
@@ -82,7 +72,7 @@ export function parser(
         }
         const nameE = Vi;
         if (nameS === nameE) {
-          panic("ERR_EMPTY_NAME", Vi);
+          panic('ERR_EMPTY_NAME', Vi);
         }
 
         AT[Ai] = 1; // TYPE_STAG
@@ -105,23 +95,23 @@ export function parser(
           }
           const aE = Vi;
           if (aS === aE) {
-            panic("ERR_MALFORMED_ATTR", Vi);
+            panic('ERR_MALFORMED_ATTR', Vi);
           }
 
           /* @slot ATTR_UNIQUE_CHECK */
 
           if (V[Vi++] !== 0x3d) {
-            panic("ERR_EXPECTED_EQUALS", Vi - 1);
+            panic('ERR_EXPECTED_EQUALS', Vi - 1);
           }
           /* @slot ATTR_QUOTE_OPEN */
           if (V[Vi++] !== 0x22) {
-            panic("ERR_EXPECTED_QUOTE", Vi - 1);
+            panic('ERR_EXPECTED_QUOTE', Vi - 1);
           }
 
           const vS = Vi;
           const nextQ = V.indexOf(0x22, Vi);
           if (nextQ === -1) {
-            panic("ERR_UNCLOSED_ATTR", Vi);
+            panic('ERR_UNCLOSED_ATTR', Vi);
           }
 
           AT[Ai] = 3; // TYPE_ATTR_KEY
@@ -141,7 +131,7 @@ export function parser(
           // '/' Self-closing
           /* @slot STAG_SELF_CLOSE */
           if (V[++Vi] !== 0x3e) {
-            panic("ERR_EXPECTED_GT", Vi);
+            panic('ERR_EXPECTED_GT', Vi);
           }
           Si -= 2; // Pop stack
           Vi++;
@@ -149,7 +139,7 @@ export function parser(
           // '>'
           Vi++;
         } else {
-          panic("ERR_ILLEGAL_TAG_CHAR", Vi);
+          panic('ERR_ILLEGAL_TAG_CHAR', Vi);
         }
       }
     } else {
